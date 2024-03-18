@@ -127,7 +127,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="Operations.cpp" />
+    <ClCompile Include="Sum.cpp" />
     <ClCompile Include="Long Number Calculator.cpp" />
   </ItemGroup>
   <ItemGroup>
