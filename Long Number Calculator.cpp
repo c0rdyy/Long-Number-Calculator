@@ -5,6 +5,7 @@
 #include <string.h>
 
 #define MAX 1000
+
 int main()
 {
 	setlocale(LC_ALL, "Ru");
@@ -18,7 +19,10 @@ int main()
 	printf("*                                                 *\n");
 	printf("*  Добро пожаловать в калькулятор длинных чисел!  *\n");
 	printf("*                                                 *\n");
-	printf("***************************************************\n\n\n");
+	printf("***************************************************\n\n");
+
+	printf("## ПРИМЕЧАНИЕ!\n");
+	printf("## Калькулятор работает только с целыми неотрицательными числами!\n\n");
 
 	do
 	{
@@ -38,11 +42,6 @@ int main()
 		while (getchar() != '\n'); // Очистка буфера
 
 		printf("\n\n");
-
-		if (t != 2 && t != 1)
-		{
-			printf("Ошибка ввода!\n");
-		}
 
 		switch (t)
 		{
@@ -67,11 +66,6 @@ int main()
 				scanf_s("%d", &task);
 				while (getchar() != '\n');
 				printf("\n\n");
-
-				if (task < 1 || task > 4)
-				{
-					printf("Ошибка ввода!\n");
-				}
 
 				switch (task)
 				{
@@ -186,7 +180,7 @@ int main()
 					printf("Результат: %s\n\n", result);
 					break;
 				default:
-					printf("Ошибка!\n");
+					printf("Ошибка ввода!\n\n");
 					break;
 				}
 
@@ -197,7 +191,7 @@ int main()
 			printf("Завершение программы!\n");
 			break;
 		default:
-			printf("Ошибка!\n");
+			printf("Ошибка ввода!\n\n");
 			break;
 		}
 
