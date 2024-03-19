@@ -80,20 +80,52 @@ int main()
 					fgets(num1, sizeof(num1), stdin);
 					num1[strcspn(num1, "\n")] = '\0'; // Удаление символа новой строки
 
+					while (!isNumber(num1)) 
+					{
+						printf("Ошибка! Введите корректное число!\n");
+						printf("Введите первое число: ");
+						fgets(num1, sizeof(num1), stdin);
+						num1[strcspn(num1, "\n")] = '\0'; 
+					}
+
 					printf("Введите второе число: ");
 					fgets(num2, sizeof(num2), stdin);
-					num2[strcspn(num2, "\n")] = '\0'; // Удаление символа новой строки
+					num2[strcspn(num2, "\n")] = '\0';
+
+					while (!isNumber(num2))
+					{
+						printf("Ошибка! Введите корректное число!\n");
+						printf("Введите второе число: ");
+						fgets(num2, sizeof(num2), stdin);
+						num2[strcspn(num2, "\n")] = '\0';
+					}
 
 					addNumbers(num1, num2, result);
 					break;
 				case 2:
 					printf("Введите первое число: ");
 					fgets(num1, sizeof(num1), stdin);
-					num1[strcspn(num1, "\n")] = '\0'; // Удаление символа новой строки
+					num1[strcspn(num1, "\n")] = '\0'; 
+
+					while (!isNumber(num1))
+					{
+						printf("Ошибка! Введите корректное число!\n");
+						printf("Введите первое число: ");
+						fgets(num1, sizeof(num1), stdin);
+						num1[strcspn(num1, "\n")] = '\0';
+					}
 
 					printf("Введите второе число: ");
 					fgets(num2, sizeof(num2), stdin);
-					num2[strcspn(num2, "\n")] = '\0'; // Удаление символа новой строки
+					num2[strcspn(num2, "\n")] = '\0';
+
+					while (!isNumber(num2))
+					{
+						printf("Ошибка! Введите корректное число!\n");
+						printf("Введите второе число: ");
+						fgets(num2, sizeof(num2), stdin);
+						num2[strcspn(num2, "\n")] = '\0';
+					}
 
 					subtract(num1, num2, result);
 					printf("Результат: %s\n\n", result);
@@ -101,16 +133,60 @@ int main()
 				case 3:
 					printf("Введите первое число: ");
 					fgets(num1, sizeof(num1), stdin);
-					num1[strcspn(num1, "\n")] = '\0'; // Удаление символа новой строки
+					num1[strcspn(num1, "\n")] = '\0';
+
+					while (!isNumber(num1))
+					{
+						printf("Ошибка! Введите корректное число!\n");
+						printf("Введите первое число: ");
+						fgets(num1, sizeof(num1), stdin);
+						num1[strcspn(num1, "\n")] = '\0';
+					}
 
 					printf("Введите второе число: ");
 					fgets(num2, sizeof(num2), stdin);
-					num2[strcspn(num2, "\n")] = '\0'; // Удаление символа новой строки
+					num2[strcspn(num2, "\n")] = '\0';
+
+					while (!isNumber(num2))
+					{
+						printf("Ошибка! Введите корректное число!\n");
+						printf("Введите второе число: ");
+						fgets(num2, sizeof(num2), stdin);
+						num2[strcspn(num2, "\n")] = '\0';
+					}
 
 					multiply(num1, num2, result);
 					printf("Результат: %s\n\n", result);
 					break;
+				case 4:
+					printf("Введите первое число: ");
+					fgets(num1, sizeof(num1), stdin);
+					num1[strcspn(num1, "\n")] = '\0';
+
+					while (!isNumber(num1))
+					{
+						printf("Ошибка! Введите корректное число!\n");
+						printf("Введите первое число: ");
+						fgets(num1, sizeof(num1), stdin);
+						num1[strcspn(num1, "\n")] = '\0';
+					}
+
+					printf("Введите второе число: ");
+					fgets(num2, sizeof(num2), stdin);
+					num2[strcspn(num2, "\n")] = '\0';
+
+					while (!isNumber(num2))
+					{
+						printf("Ошибка! Введите корректное число!\n");
+						printf("Введите второе число: ");
+						fgets(num2, sizeof(num2), stdin);
+						num2[strcspn(num2, "\n")] = '\0';
+					}
+				
+					printf("Результат: %s\n\n", result);
+					break;
 				default:
+					printf("Ошибка!\n");
 					break;
 				}
 

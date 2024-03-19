@@ -6,6 +6,31 @@
 #include <stdlib.h>
 #define MAX 1000
 
+// Проверка строки на числовое значение
+int isNumber(char* num) 
+{
+    int flag = 1;
+    int i = 0;
+
+    if (num[0] == '-') 
+    {
+        if (num[1] == '\0')
+        {
+            flag = 0; // Строка содержит только минус, не число
+        }
+        i = 1;
+    }
+
+    for (; num[i] != '\0'; i++) 
+    {
+        if (num[i] < '0' || num[i] > '9') 
+        {
+            flag = 0; // Не число
+        }
+    }
+    return flag; // Число
+}
+
 // Сумма
 void addNumbers(char* num1, char* num2, char* result)
 {
@@ -172,5 +197,3 @@ void multiply(char num1[], char num2[], char result[])
         result[index + 1] = '\0';
     }
 }
-
-
