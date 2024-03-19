@@ -96,7 +96,19 @@ int main()
 					num2[strcspn(num2, "\n")] = '\0'; // Удаление символа новой строки
 
 					subtract(num1, num2, result);
-					//subtractNumbers(num1, num2, result);
+					printf("Результат: %s\n\n", result);
+					break;
+				case 3:
+					printf("Введите первое число: ");
+					fgets(num1, sizeof(num1), stdin);
+					num1[strcspn(num1, "\n")] = '\0'; // Удаление символа новой строки
+
+					printf("Введите второе число: ");
+					fgets(num2, sizeof(num2), stdin);
+					num2[strcspn(num2, "\n")] = '\0'; // Удаление символа новой строки
+
+					multiply(num1, num2, result);
+					printf("Результат: %s\n\n", result);
 					break;
 				default:
 					break;

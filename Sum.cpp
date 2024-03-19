@@ -70,110 +70,107 @@ void addNumbers(char* num1, char* num2, char* result)
 }
 
 // Вычитание
-void subtract(const char* num1, const char* num2, char* result) 
+void subtract(char num1[], char num2[], char result[]) {
+    int len1 = strlen(num1);
+    int len2 = strlen(num2);
+    int res[MAX] = { 0 };
+
+    int negative = 0;
+    if (len1 < len2 || (len1 == len2 && strcmp(num1, num2) < 0)) {
+        subtract(num2, num1, result);
+        negative = 1;
+    }
+    else {
+        for (int i = 0; i < len1; i++) {
+            res[i] = num1[len1 - i - 1] - '0';
+        }
+
+        for (int i = 0; i < len2; i++) {
+            res[i] -= num2[len2 - i - 1] - '0';
+        }
+
+        for (int i = 0; i < MAX - 1; i++) {
+            if (res[i] < 0) {
+                res[i] += 10;
+                res[i + 1]--;
+            }
+        }
+
+        int index = MAX - 1;
+        while (index >= 0 && res[index] == 0) {
+            index--;
+        }
+
+        if (index == -1) {
+            strcpy(result, "0");
+        }
+        else {
+            for (int i = index; i >= 0; i--) {
+                result[index - i] = res[i] + '0';
+            }
+            result[index + 1] = '\0';
+        }
+    }
+
+    if (negative) {
+        memmove(result + 1, result, strlen(result) + 1);
+        result[0] = '-';
+    }
+}
+
+// Переворачиваем строку
+void reverseString(char* str) 
+{
+    int len = strlen(str);
+    for (int i = 0; i < len / 2; i++) 
+    {
+        char temp = str[i];
+        str[i] = str[len - i - 1];
+        str[len - i - 1] = temp;
+    }
+}
+
+// Умножение
+void multiply(char num1[], char num2[], char result[]) 
 {
     int len1 = strlen(num1);
     int len2 = strlen(num2);
-    int maxlen;
-    int negative = 0;
+    int res[MAX] = { 0 };
 
-    if (len1 > len2)
+    for (int i = 0; i < len1; i++) 
     {
-        maxlen = len1;
-    }
-    else
-    {
-        maxlen = len2;
-    }
-
-    if (len1 < len2) 
-    {
-        const char* temp = num1;
-        num1 = num2;
-        num2 = temp;
-        int tempLen = len1;
-        len1 = len2;
-        len2 = tempLen;
-        negative = 1;
-    }
-
-    int i, carry = 0;
-    for (i = 0; i < maxlen; i++) 
-    {
-        int digit1;
-        int digit2;
-
-        if (i < len1)
+        for (int j = 0; j < len2; j++) 
         {
-            digit1 = num1[len1 - 1 - i] - '0';
+            res[i + j] += (num1[len1 - i - 1] - '0') * (num2[len2 - j - 1] - '0');
         }
-        else
-        {
-            digit1 = 0;
-        }
-
-        if (i < len2)
-        {
-            digit2 = num2[len2 - 1 - i] - '0';
-        }
-        else
-        {
-            digit2 = 0;
-        }
-
-        int diff = digit1 - digit2 - carry;
-        if (diff < 0) 
-        {
-            diff += 10;
-            carry = 1;
-        }
-        else 
-        {
-            carry = 0;
-        }
-
-        result[i] = diff + '0';
     }
 
-    // Добавление оставшегося переноса в случае необходимости
-    if (carry == 1) 
+    int carry = 0;
+    for (int i = 0; i < MAX; i++) 
     {
-        result[i++] = '1';
+        res[i] += carry;
+        carry = res[i] / 10;
+        res[i] %= 10;
     }
 
-    // Отрицательный результат
-    if (negative) 
+    int index = MAX - 1;
+    while (index >= 0 && res[index] == 0) 
     {
-        result[i++] = '-';
+        index--;
     }
 
-    // Разворот результата
-    for (int j = 0; j < i / 2; j++) 
+    if (index == -1) 
     {
-        char temp = result[j];
-        result[j] = result[i - j - 1];
-        result[i - j - 1] = temp;
+        strcpy(result, "0");
     }
-
-    // Удаление ведущих нулей
-    int j = 0;
-    while (result[j] == '0' && j < i - 1) 
+    else 
     {
-        j++;
-    }
-
-    // Сдвиг результата, если есть ведущие нули
-    if (j > 0) 
-    {
-        for (int k = 0; k < i - j; k++) 
+        for (int i = index; i >= 0; i--) 
         {
-            result[k] = result[k + j];
+            result[index - i] = res[i] + '0';
         }
-        i -= j;
+        result[index + 1] = '\0';
     }
-
-    result[i] = '\0'; // Добавление нулевого символа в конце строки
-
-    printf("Результат вычитания: %s\n\n", result);
 }
+
 
