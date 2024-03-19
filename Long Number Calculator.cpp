@@ -76,7 +76,6 @@ int main()
 				switch (task)
 				{
 				case 1:
-					
 					printf("Введите первое число: ");
 					fgets(num1, sizeof(num1), stdin);
 					num1[strcspn(num1, "\n")] = '\0'; // Удаление символа новой строки
@@ -86,8 +85,18 @@ int main()
 					num2[strcspn(num2, "\n")] = '\0'; // Удаление символа новой строки
 
 					addNumbers(num1, num2, result);
-					//addLongNumbers(num1, num2, result);
-					//printf("Сумма: %s\n\n", result);
+					break;
+				case 2:
+					printf("Введите первое число: ");
+					fgets(num1, sizeof(num1), stdin);
+					num1[strcspn(num1, "\n")] = '\0'; // Удаление символа новой строки
+
+					printf("Введите второе число: ");
+					fgets(num2, sizeof(num2), stdin);
+					num2[strcspn(num2, "\n")] = '\0'; // Удаление символа новой строки
+
+					subtract(num1, num2, result);
+					//subtractNumbers(num1, num2, result);
 					break;
 				default:
 					break;
