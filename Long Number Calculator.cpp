@@ -14,6 +14,7 @@ int main()
 
 	char num1[MAX], num2[MAX];
 	char result[MAX];
+	int first_digit_pos = 0;
 
 	printf("***************************************************\n");
 	printf("*                                                 *\n");
@@ -22,7 +23,7 @@ int main()
 	printf("***************************************************\n\n");
 
 	printf("## ПРИМЕЧАНИЕ!\n");
-	printf("## Калькулятор работает только с целыми неотрицательными числами!\n\n");
+	printf("## Калькулятор работает только с целыми числами!\n");
 	printf("## Сложение и вычитание работает с отрицательными числами!\n\n");
 
 	do
@@ -94,8 +95,20 @@ int main()
 						fgets(num2, sizeof(num2), stdin);
 						num2[strcspn(num2, "\n")] = '\0';
 					}
-
 					addNumbers(num1, num2, result);
+					//printf("Результат сложения: %s\n", result);
+
+					while (result[first_digit_pos] == '0' && first_digit_pos < MAX - 2) {
+						first_digit_pos++;
+					}
+
+					if (first_digit_pos == MAX - 2) { // В случае, если результат равен 0
+						printf("Результат сложения: 0\n\n");
+					}
+					else {
+						printf("Результат сложения: %s\n\n", result + first_digit_pos);
+					}
+
 					break;
 				case 2:
 					printf("Введите первое число: ");
@@ -123,7 +136,7 @@ int main()
 					}
 
 					subtract(num1, num2, result);
-					//printf("Результат: %s\n\n", result);
+					printf("Результат: %s\n\n", result);
 					break;
 				case 3:
 					printf("Введите первое число: ");

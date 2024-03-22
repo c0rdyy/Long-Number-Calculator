@@ -32,79 +32,30 @@ int isNumber(char* num)
     return flag; // Число
 }
 
-// Сумма
-void addNumbers(char* num1, char* num2, char* result)
+// Сложение
+void addPositiveNumbers(char* num1, char* num2, char* result)
 {
-    int is_num1_negative = (num1[0] == '-');
-    int is_num2_negative = (num2[0] == '-');
-
-    if (is_num1_negative && !is_num2_negative) {
-        // Если первое число отрицательное, а второе положительное, меняем их местами
-        char* temp = num1;
-        num1 = num2;
-        num2 = temp;
-
-        int temp_neg = is_num1_negative;
-        is_num1_negative = is_num2_negative;
-        is_num2_negative = temp_neg;
-    }
-
-    // Случай для разных знаков
-    if (is_num1_negative != is_num2_negative)
-    {
-        if (is_num1_negative)
-        {
-            num1++; // Сдвигаем указатель, чтобы пропустить минусный знак
-        }
-        else
-        {
-            num2++; // Сдвигаем указатель, чтобы пропустить минусный знак
-        }
-
-        subtract(num1, num2, result);
-
-        if (!strcmp(result, "0"))
-        {
-            printf("Результат: 0\n\n");
-        }
-        else if (is_num1_negative)
-        {
-            printf("Результат: -%s\n\n", result);
-        }
-        else
-        {
-            printf("Результат: %s\n\n", result);
-        }
-        return;
-    }
-
     memset(result, '0', MAX);
     result[MAX - 1] = '\0';
 
     int len1 = strlen(num1);
     int len2 = strlen(num2);
 
-    int size;
-
     int mas1[MAX] = { 0 }, mas2[MAX] = { 0 };
 
-    // Знак первого числа
-    int sign1 = 1;
-    if (is_num1_negative)
+    // Переворачивание числа
+    for (int i = 0; i < len1; i++) 
     {
-        sign1 = -1;
-        num1++;
-        len1--;
+        mas1[len1 - i - 1] = num1[i] - '0';
     }
 
-    // Знак второго числа
-    int sign2 = 1;
-    if (is_num2_negative)
+    for (int i = 0; i < len2; i++) 
     {
-        sign2 = -1;
-        num2++;
-        len2--;
+        mas2[len2 - i - 1] = num2[i] - '0';
     }
+
+    int carry = 0; // Перенос из предыдущего разряда
+    int size;
 
     if (len1 > len2)
     {
@@ -115,152 +66,230 @@ void addNumbers(char* num1, char* num2, char* result)
         size = len2;
     }
 
-    // Преобразование массивов символов в числовые
-    for (int i = 0; i < len1; i++)
+    for (int i = 0; i < size; i++) 
     {
-        mas1[i] = num1[i] - '0';
-    }
-    for (int i = 0; i < len2; i++)
-    {
-        mas2[i] = num2[i] - '0';
+        int sum = carry + mas1[i] + mas2[i];
+        result[MAX - i - 2] = (sum % 10) + '0';
+        carry = sum / 10;
     }
 
-    // Сложение чисел столбиком
-    for (int i = 0; i < size; i++)
+    if (carry) 
     {
-        if (i < len1)
-        {
-            result[MAX - i - 2] += mas1[len1 - i - 1];
-        }
-        if (i < len2)
-        {
-            result[MAX - i - 2] += mas2[len2 - i - 1];
-        }
-        int carry = (result[MAX - i - 2] - '0') / 10; // Вычисляем перенос
-        result[MAX - i - 2] = (result[MAX - i - 2] - '0') % 10 + '0'; // Записываем остаток
-
-        if (carry)
-        {
-            result[MAX - i - 3] += carry; // Если есть перенос, добавляем его к следующему разряду
-        }
+        result[MAX - size - 2] = carry + '0';
     }
 
+    // Удаление лишних нулей
     int first_digit_pos = 0;
-    while (result[first_digit_pos] == '0' && first_digit_pos < MAX - 2)
+    while (result[first_digit_pos] == '0' && first_digit_pos < MAX - 1) 
     {
         first_digit_pos++;
     }
 
-    // Вывод результата без лишних нулей
-    if (first_digit_pos == MAX - 1) // Все цифры нули
+    // Сдвиг результата в начало массива
+    if (first_digit_pos > 0) 
     {
-        printf("Результат: 0\n\n"); // Выводим один ноль
-    }
-    else
-    {
-        if (is_num1_negative && is_num2_negative)
-        {
-            printf("Результат: -%s\n\n", result + first_digit_pos); // Вывод результата без лишних нулей
-        }
-
-        else if (is_num1_negative == 0 && is_num2_negative == 0)
-        {
-            printf("Результат: %s\n\n", result + first_digit_pos); // Вывод результата без лишних нулей
-        }
-
+        memmove(result, result + first_digit_pos, MAX - first_digit_pos);
     }
 }
 
-// Вычитание
-void subtract(char num1[], char num2[], char result[])
+void addNumbers(char* num1, char* num2, char* result)
 {
-    int is_num1_negative = (num1[0] == '-');
-    int is_num2_negative = (num2[0] == '-');
+    bool isNum1Negative = isNegative(num1);
+    bool isNum2Negative = isNegative(num2);
 
-    if (is_num1_negative && !is_num2_negative)
+    char tempNum1[MAX + 1], tempNum2[MAX + 1];
+
+    // Удаление минуса
+    strcpy(tempNum1, isNum1Negative ? num1 + 1 : num1);
+    strcpy(tempNum2, isNum2Negative ? num2 + 1 : num2);
+
+    if (!isNum1Negative && !isNum2Negative) 
     {
-        addNumbers(num1, num2, result);
-        printf("Результат: %s\n\n", result);
-        return;
+        // Оба числа положительные
+        addPositiveNumbers(tempNum1, tempNum2, result);
     }
-
-    else if (is_num1_negative && is_num2_negative)
+    else if (isNum1Negative && isNum2Negative) 
     {
-        addNumbers(num1, num2 + 1, result);
+        // Оба числа отрицательные
+        addPositiveNumbers(tempNum1, tempNum2, result);
+        memmove(result + 1, result, strlen(result) + 1);
+        result[0] = '-';
     }
-
-    else if (!is_num1_negative && is_num2_negative)
+    else 
     {
-        addNumbers(num1, num2 + 1, result);
-    }
-
-    else
-    {
-        int len1 = strlen(num1);
-        int len2 = strlen(num2);
-        int res[MAX] = { 0 };
-
-        int negative = 0;
-        if (len1 < len2 || (len1 == len2 && strcmp(num1, num2) < 0))
+        // Числа имеют разные знаки
+        int cmpResult = compare_strings(tempNum1, tempNum2);
+        if ((cmpResult > 0 && !isNum1Negative) || (cmpResult < 0 && isNum1Negative)) 
         {
-            subtract(num2, num1, result);
-            negative = 1;
-            memmove(result + 1, result, strlen(result) + 1);
-            result[0] = '-';
-            printf("Результат: %s\n\n", result);
-            return;
+            subtract(tempNum1, tempNum2, result);
+            if (isNum1Negative) 
+            {
+                memmove(result + 1, result, strlen(result) + 1);
+                result[0] = '-';
+            }
         }
-        else
-        {
-            for (int i = 0; i < len1; i++)
+        else {
+            subtract(tempNum2, tempNum1, result);
+            if (isNum2Negative) 
             {
-                res[i] = num1[len1 - i - 1] - '0';
+                memmove(result + 1, result, strlen(result) + 1);
+                result[0] = '-';
             }
-
-            for (int i = 0; i < len2; i++)
-            {
-                res[i] -= num2[len2 - i - 1] - '0';
-            }
-
-            for (int i = 0; i < MAX - 1; i++)
-            {
-                if (res[i] < 0)
-                {
-                    res[i] += 10;
-                    res[i + 1]--;
-                }
-            }
-
-            int index = MAX - 1;
-            while (index >= 0 && res[index] == 0)
-            {
-                index--;
-            }
-
-            if (index == -1)
-            {
-                strcpy(result, "0");
-            }
-            else {
-                for (int i = index; i >= 0; i--)
-                {
-                    result[index - i] = res[i] + '0';
-                }
-                result[index + 1] = '\0';
-            }
-
         }
-
-        if (negative)
-        {
-            memmove(result + 1, result, strlen(result) + 1);
-            result[0] = '-';
-        }
-        printf("Результат: %s\n\n", result);    
     }
 }
 
-// Переворачиваем строку
+
+//Вычитание 
+int compare_strings(const char* num1, const char* num2) 
+{
+    int len1 = strlen(num1);
+    int len2 = strlen(num2);
+
+    if (len1 > len2)
+    {
+        return 1;
+    }
+
+    if (len1 < len2)
+    {
+        return -1;
+    }
+
+    for (int i = 0; i < len1; i++) 
+    {
+        if (num1[i] > num2[i])
+        {
+            return 1;
+        }
+        if (num1[i] < num2[i])
+        {
+            return -1;
+        }
+    }
+
+    return 0;
+}
+
+bool isNegative(const char* num) 
+{
+    return num[0] == '-';
+}
+
+void subtract_positive(const char* num1, const char* num2, char* result) 
+{
+    int len1 = strlen(num1);
+    int len2 = strlen(num2);
+    int diff = len1 - len2;
+    memset(result, 0, MAX);  // Очистка результата
+
+    int carry = 0;
+
+    // Вычитание начинается с конца строк
+    for (int i = len2 - 1; i >= 0; i--) 
+    {
+        int sub = ((num1[i + diff] - '0') - (num2[i] - '0') - carry);
+        if (sub < 0) 
+        {
+            sub += 10;
+            carry = 1;
+        }
+        else {
+            carry = 0;
+        }
+        result[i + diff] = sub + '0';
+    }
+
+    for (int i = diff - 1; i >= 0; i--) 
+    {
+        if (carry == 1 && num1[i] == '0') 
+        {
+            result[i] = '9';
+        }
+        else {
+            int sub = (num1[i] - '0') - carry;
+            result[i] = sub + '0';
+            carry = 0;
+        }
+    }
+
+    // Удаление нулей из результата
+    int start = 0;
+    while (start < len1 && result[start] == '0') 
+    {
+        start++;
+    }
+
+    if (start == len1) 
+    { 
+        // В случае, если результат равен 0.
+        strcpy(result, "0");
+    }
+    else 
+    {
+        if (start > 0) 
+        {
+            memmove(result, result + start, len1 - start + 1); // Сдвиг результата в начало
+        }
+    }
+}
+
+void subtract(const char* num1, const char* num2, char* result) 
+{
+    char tempNum1[MAX + 1], tempNum2[MAX + 1];
+    bool isNum1Negative = isNegative(num1);
+    bool isNum2Negative = isNegative(num2);
+
+    // Удаление минуса
+    strcpy(tempNum1, isNum1Negative ? num1 + 1 : num1);
+    strcpy(tempNum2, isNum2Negative ? num2 + 1 : num2);
+
+    int needSwap = compare_strings(tempNum1, tempNum2);
+
+    if (!isNum1Negative && !isNum2Negative) 
+    {
+        if (needSwap < 0) 
+        {
+            subtract_positive(tempNum2, tempNum1, result);
+            memmove(result + 1, result, strlen(result) + 1); // Сдвиг результата
+            result[0] = '-';
+        }
+        else {
+            subtract_positive(tempNum1, tempNum2, result);
+        }
+    }
+    else if (isNum1Negative && isNum2Negative) 
+    {
+        if (needSwap < 0) 
+        {
+            subtract_positive(tempNum2, tempNum1, result);
+        }
+        else 
+        {
+            subtract_positive(tempNum1, tempNum2, result);
+            memmove(result + 1, result, strlen(result) + 1); // Сдвиг результата
+            result[0] = '-'; 
+        }
+    }
+    else if (isNum1Negative && !isNum2Negative) 
+    {
+        addPositiveNumbers(tempNum1, tempNum2, result);
+        memmove(result + 1, result, strlen(result) + 1);
+        result[0] = '-';
+    }
+    else 
+    {
+        addPositiveNumbers(tempNum1, tempNum2, result);
+    }
+
+    // Проверка на -0
+    if (strcmp(result, "-0") == 0) 
+    {
+        strcpy(result, "0");
+    }
+}
+
+// Реверс строки
 void reverseString(char* str) 
 {
     int len = strlen(str);

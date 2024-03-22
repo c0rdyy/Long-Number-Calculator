@@ -1,7 +1,11 @@
 #pragma once
 
-void addNumbers(char* num1, char* num2, char *result);
-void multiply(char num1[], char num2[], char result[]);
-void reverseString(char* str);
-void subtract(char num1[], char num2[], char result[]);
-int isNumber(char* str);
+int isNumber(char* str); // Ввод
+void addNumbers(char* num1, char* num2, char *result); // Сложение
+void addPositiveNumbers(char* num1, char* num2, char* result);
+void multiply(char num1[], char num2[], char result[]); // Умножение
+void reverseString(char* str); // Переворачивание
+void subtract(const char* num1, const char* num2, char* result); // Вычитание
+void subtract_positive(const char* num1, const char* num2, char* result); // Вычитание
+int compare_strings(const char* num1, const char* num2); // Сравнение
+bool isNegative(const char* num); // Минус
