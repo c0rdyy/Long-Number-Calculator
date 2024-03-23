@@ -5,7 +5,7 @@
 #include <string.h>
 #include <stdlib.h>
 
-#define MAX 1000
+#define MAX 1024
 
 // Проверка строки на число
 int isNumber(char* num) 
@@ -30,6 +30,11 @@ int isNumber(char* num)
         }
     }
     return flag; // Число
+}
+
+bool isNegative(const char* num)
+{
+    return num[0] == '-';
 }
 
 // Сложение
@@ -100,8 +105,23 @@ void addNumbers(char* num1, char* num2, char* result)
     char tempNum1[MAX + 1], tempNum2[MAX + 1];
 
     // Удаление минуса
-    strcpy(tempNum1, isNum1Negative ? num1 + 1 : num1);
-    strcpy(tempNum2, isNum2Negative ? num2 + 1 : num2);
+    if (isNum1Negative)
+    {
+        strcpy(tempNum1, num1 + 1);
+    }
+    else
+    {
+        strcpy(tempNum1, num1);
+    }
+
+    if (isNum2Negative)
+    {
+        strcpy(tempNum2, num2 + 1);
+    }
+    else
+    {
+        strcpy(tempNum2, num2);
+    }
 
     if (!isNum1Negative && !isNum2Negative) 
     {
@@ -140,7 +160,7 @@ void addNumbers(char* num1, char* num2, char* result)
 }
 
 
-//Вычитание 
+// Функции для вычитания 
 int compare_strings(const char* num1, const char* num2) 
 {
     int len1 = strlen(num1);
@@ -171,15 +191,11 @@ int compare_strings(const char* num1, const char* num2)
     return 0;
 }
 
-bool isNegative(const char* num) 
-{
-    return num[0] == '-';
-}
-
 void subtract_positive(const char* num1, const char* num2, char* result) 
 {
     int len1 = strlen(num1);
     int len2 = strlen(num2);
+
     int diff = len1 - len2;
     memset(result, 0, MAX);  // Очистка результата
 
@@ -222,7 +238,7 @@ void subtract_positive(const char* num1, const char* num2, char* result)
 
     if (start == len1) 
     { 
-        // В случае, если результат равен 0.
+        // В случае, если результат равен 0
         strcpy(result, "0");
     }
     else 
@@ -237,12 +253,28 @@ void subtract_positive(const char* num1, const char* num2, char* result)
 void subtract(const char* num1, const char* num2, char* result) 
 {
     char tempNum1[MAX + 1], tempNum2[MAX + 1];
+
     bool isNum1Negative = isNegative(num1);
     bool isNum2Negative = isNegative(num2);
 
     // Удаление минуса
-    strcpy(tempNum1, isNum1Negative ? num1 + 1 : num1);
-    strcpy(tempNum2, isNum2Negative ? num2 + 1 : num2);
+    if (isNum1Negative) 
+    {
+        strcpy(tempNum1, num1 + 1);
+    }
+    else 
+    {
+        strcpy(tempNum1, num1);
+    }
+
+    if (isNum2Negative)
+    {
+        strcpy(tempNum2, num2 + 1);
+    }
+    else
+    {
+        strcpy(tempNum2, num2);
+    }
 
     int needSwap = compare_strings(tempNum1, tempNum2);
 
@@ -302,44 +334,174 @@ void reverseString(char* str)
 }
 
 // Умножение
-void multiply(char num1[], char num2[], char result[]) 
+void multiply(char* num1, char* num2, char* result) 
 {
+    // Убираем минус
+    int is_negative_flag = 0;
+    if (num1[0] == '-') 
+    {
+        is_negative_flag ^= 1;
+        num1++;
+    }
+    if (num2[0] == '-') 
+    {
+        is_negative_flag ^= 1;
+        num2++;
+    }
+
     int len1 = strlen(num1);
     int len2 = strlen(num2);
-    int res[MAX] = { 0 };
+    int resultArr[MAX] = { 0 };
 
-    for (int i = 0; i < len1; i++) 
+    int i_n1 = 0; // Позиция для первого числа
+    int i_n2 = 0; // Позиция для второго числа
+
+    // Обход числа справа налево
+    for (int i = len1 - 1; i >= 0; i--) 
     {
-        for (int j = 0; j < len2; j++) 
+        int carry = 0;
+        int n1 = num1[i] - '0';
+        i_n2 = 0;
+
+        // Перемножение n1 с каждой цифрой num2
+        for (int j = len2 - 1; j >= 0; j--) 
         {
-            res[i + j] += (num1[len1 - i - 1] - '0') * (num2[len2 - j - 1] - '0');
+            int n2 = num2[j] - '0';
+            int sum = n1 * n2 + resultArr[i_n1 + i_n2] + carry;
+            carry = sum / 10;
+            resultArr[i_n1 + i_n2] = sum % 10;
+            i_n2++;
+        }
+
+        if (carry > 0) 
+        {
+            resultArr[i_n1 + i_n2] += carry;
+        }
+        i_n1++;
+    }
+
+    // Пропуск нулей в начале
+    int i = len1 + len2 - 1;
+    while (i >= 0 && resultArr[i] == 0)
+    {
+        i--;
+    }
+
+    // Если результат равен 0
+    if (i == -1) 
+    {
+        strcpy(result, "0");
+        return;
+    }
+
+    // Записываем результат
+    int index = 0;
+    if (is_negative_flag) 
+    {
+        result[index++] = '-';
+    }
+
+    while (i >= 0) 
+    {
+        result[index++] = resultArr[i--] + '0';
+    }
+    result[index] = '\0';
+}
+
+// Деление
+void divide(const char* num1, const char* num2, char* result, int decimaplaces)
+{
+    if (strcmp(num2, "0") == 0)
+    {
+        strcpy(result, "Ошибка! Деление на ноль!");
+        return;
+    }
+
+    bool isNum1Negative = isNegative(num1);
+    bool isNum2Negative = isNegative(num2);
+
+    char tempNum1[MAX + 1], tempNum2[MAX + 1];
+    char tempResult[MAX + 1];
+
+    if (isNum1Negative)
+    {
+        strcpy(tempNum1, num1 + 1);
+    }
+    else
+    {
+        strcpy(tempNum1, num1);
+    }
+
+    if (isNum2Negative)
+    {
+        strcpy(tempNum2, num2 + 1);
+    }
+    else
+    {
+        strcpy(tempNum2, num2);
+    }
+
+    memset(result, 0, MAX);
+    memset(tempResult, 0, MAX);
+
+    int resultPos = 0;
+    int tempNum1Pos = 0;
+    bool decimalAdded = false; // Была ли добавлена десятичная точка
+
+    while (tempNum1Pos < strlen(tempNum1) || decimaplaces > 0)
+    {
+        if (tempNum1Pos >= strlen(tempNum1))
+        {
+            // Если все цифры делимого были обработаны, добавляем ноль для продолжения деления после запятой
+            if (!decimalAdded)
+            {
+                result[resultPos++] = '.';
+                decimalAdded = true;
+            }
+            tempResult[strlen(tempResult)] = '0'; // Добавление нуля к остатку
+            decimaplaces--;
+        }
+        else
+        {
+            // Добавляем следующую цифру к остатку
+            size_t tempResultLen = strlen(tempResult);
+            tempResult[tempResultLen] = tempNum1[tempNum1Pos++];
+            tempResult[tempResultLen + 1] = '\0'; // Конец строки
+
+            while (tempResult[0] == '0' && tempResult[1] != '\0')
+            {
+                memmove(tempResult, tempResult + 1, strlen(tempResult));
+            }
+        }
+
+        if (compare_strings(tempResult, tempNum2) >= 0 || decimalAdded)
+        {
+            int count = 0;
+            while (compare_strings(tempResult, tempNum2) >= 0)
+            {
+                subtract(tempResult, tempNum2, tempResult);
+                count++;
+            }
+            result[resultPos++] = count + '0';
+        }
+        else if (resultPos > 0 || decimalAdded)
+        {
+            result[resultPos++] = '0';
         }
     }
 
-    int carry = 0;
-    for (int i = 0; i < MAX; i++) 
-    {
-        res[i] += carry;
-        carry = res[i] / 10;
-        res[i] %= 10;
-    }
-
-    int index = MAX - 1;
-    while (index >= 0 && res[index] == 0) 
-    {
-        index--;
-    }
-
-    if (index == -1) 
+    if (resultPos == 0)
     {
         strcpy(result, "0");
     }
-    else 
+    else
     {
-        for (int i = index; i >= 0; i--) 
+        if (isNum1Negative != isNum2Negative) 
         {
-            result[index - i] = res[i] + '0';
+            memmove(result + 1, result, resultPos + 1);
+            result[0] = '-';
+            resultPos++;
         }
-        result[index + 1] = '\0';
+        result[resultPos] = '\0';
     }
 }

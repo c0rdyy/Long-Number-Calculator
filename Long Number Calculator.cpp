@@ -15,6 +15,7 @@ int main()
 	char num1[MAX], num2[MAX];
 	char result[MAX];
 	int first_digit_pos = 0;
+	int decimaplaces;
 
 	printf("***************************************************\n");
 	printf("*                                                 *\n");
@@ -22,9 +23,13 @@ int main()
 	printf("*                                                 *\n");
 	printf("***************************************************\n\n");
 
-	printf("## ПРИМЕЧАНИЕ!\n");
-	printf("## Калькулятор работает только с целыми числами!\n");
-	printf("## Сложение и вычитание работает с отрицательными числами!\n\n");
+	printf("###################################################\n");
+	printf("##                                               ##\n");
+	printf("##                 ПРИМЕЧАНИЕ!                   ##\n");
+	printf("##                                               ##\n");
+	printf("## Калькулятор работает только с целыми числами! ##\n");
+	printf("##                                               ##\n");
+	printf("###################################################\n\n");
 
 	do
 	{
@@ -190,7 +195,15 @@ int main()
 						fgets(num2, sizeof(num2), stdin);
 						num2[strcspn(num2, "\n")] = '\0';
 					}
-				
+					
+					do
+					{
+						printf("Введите количество знаков после запятой: ");
+						scanf_s("%d", &decimaplaces);
+					} while (decimaplaces < 0);
+					
+					divide(num1, num2, result, decimaplaces);
+
 					printf("Результат: %s\n\n", result);
 					break;
 				default:
