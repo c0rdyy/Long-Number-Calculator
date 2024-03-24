@@ -1,4 +1,4 @@
-#define _CRT_SECURE_NO_WARNINGS
+п»ї#define _CRT_SECURE_NO_WARNINGS
 
 #include "Funcs.h"
 #include <stdio.h>
@@ -7,7 +7,7 @@
 
 #define MAX 1024
 
-// Проверка строки на число
+// РџСЂРѕРІРµСЂРєР° СЃС‚СЂРѕРєРё РЅР° С‡РёСЃР»Рѕ
 int isNumber(char* num) 
 {
     int flag = 1;
@@ -17,7 +17,7 @@ int isNumber(char* num)
     {
         if (num[1] == '\0')
         {
-            flag = 0; // Строка содержит только минус, не число
+            flag = 0; // РЎС‚СЂРѕРєР° СЃРѕРґРµСЂР¶РёС‚ С‚РѕР»СЊРєРѕ РјРёРЅСѓСЃ, РЅРµ С‡РёСЃР»Рѕ
         }
         i = 1;
     }
@@ -26,10 +26,10 @@ int isNumber(char* num)
     {
         if (num[i] < '0' || num[i] > '9') 
         {
-            flag = 0; // Не число
+            flag = 0; // РќРµ С‡РёСЃР»Рѕ
         }
     }
-    return flag; // Число
+    return flag; // Р§РёСЃР»Рѕ
 }
 
 bool isNegative(const char* num)
@@ -37,7 +37,7 @@ bool isNegative(const char* num)
     return num[0] == '-';
 }
 
-// Сложение
+// РЎР»РѕР¶РµРЅРёРµ
 void addPositiveNumbers(char* num1, char* num2, char* result)
 {
     memset(result, '0', MAX);
@@ -48,7 +48,7 @@ void addPositiveNumbers(char* num1, char* num2, char* result)
 
     int mas1[MAX] = { 0 }, mas2[MAX] = { 0 };
 
-    // Переворачивание числа
+    // РџРµСЂРµРІРѕСЂР°С‡РёРІР°РЅРёРµ С‡РёСЃР»Р°
     for (int i = 0; i < len1; i++) 
     {
         mas1[len1 - i - 1] = num1[i] - '0';
@@ -59,7 +59,7 @@ void addPositiveNumbers(char* num1, char* num2, char* result)
         mas2[len2 - i - 1] = num2[i] - '0';
     }
 
-    int carry = 0; // Перенос из предыдущего разряда
+    int carry = 0; // РџРµСЂРµРЅРѕСЃ РёР· РїСЂРµРґС‹РґСѓС‰РµРіРѕ СЂР°Р·СЂСЏРґР°
     int size;
 
     if (len1 > len2)
@@ -83,14 +83,14 @@ void addPositiveNumbers(char* num1, char* num2, char* result)
         result[MAX - size - 2] = carry + '0';
     }
 
-    // Удаление лишних нулей
+    // РЈРґР°Р»РµРЅРёРµ Р»РёС€РЅРёС… РЅСѓР»РµР№
     int first_digit_pos = 0;
     while (result[first_digit_pos] == '0' && first_digit_pos < MAX - 1) 
     {
         first_digit_pos++;
     }
 
-    // Сдвиг результата в начало массива
+    // РЎРґРІРёРі СЂРµР·СѓР»СЊС‚Р°С‚Р° РІ РЅР°С‡Р°Р»Рѕ РјР°СЃСЃРёРІР°
     if (first_digit_pos > 0) 
     {
         memmove(result, result + first_digit_pos, MAX - first_digit_pos);
@@ -104,7 +104,7 @@ void addNumbers(char* num1, char* num2, char* result)
 
     char tempNum1[MAX + 1], tempNum2[MAX + 1];
 
-    // Удаление минуса
+    // РЈРґР°Р»РµРЅРёРµ РјРёРЅСѓСЃР°
     if (isNum1Negative)
     {
         strcpy(tempNum1, num1 + 1);
@@ -125,19 +125,19 @@ void addNumbers(char* num1, char* num2, char* result)
 
     if (!isNum1Negative && !isNum2Negative) 
     {
-        // Оба числа положительные
+        // РћР±Р° С‡РёСЃР»Р° РїРѕР»РѕР¶РёС‚РµР»СЊРЅС‹Рµ
         addPositiveNumbers(tempNum1, tempNum2, result);
     }
     else if (isNum1Negative && isNum2Negative) 
     {
-        // Оба числа отрицательные
+        // РћР±Р° С‡РёСЃР»Р° РѕС‚СЂРёС†Р°С‚РµР»СЊРЅС‹Рµ
         addPositiveNumbers(tempNum1, tempNum2, result);
         memmove(result + 1, result, strlen(result) + 1);
         result[0] = '-';
     }
     else 
     {
-        // Числа имеют разные знаки
+        // Р§РёСЃР»Р° РёРјРµСЋС‚ СЂР°Р·РЅС‹Рµ Р·РЅР°РєРё
         int cmpResult = compare_strings(tempNum1, tempNum2);
         if ((cmpResult > 0 && !isNum1Negative) || (cmpResult < 0 && isNum1Negative)) 
         {
@@ -160,7 +160,7 @@ void addNumbers(char* num1, char* num2, char* result)
 }
 
 
-// Функции для вычитания 
+// Р¤СѓРЅРєС†РёРё РґР»СЏ РІС‹С‡РёС‚Р°РЅРёСЏ 
 int compare_strings(const char* num1, const char* num2) 
 {
     int len1 = strlen(num1);
@@ -197,11 +197,11 @@ void subtract_positive(const char* num1, const char* num2, char* result)
     int len2 = strlen(num2);
 
     int diff = len1 - len2;
-    memset(result, 0, MAX);  // Очистка результата
+    memset(result, 0, MAX);  // РћС‡РёСЃС‚РєР° СЂРµР·СѓР»СЊС‚Р°С‚Р°
 
     int carry = 0;
 
-    // Вычитание начинается с конца строк
+    // Р’С‹С‡РёС‚Р°РЅРёРµ РЅР°С‡РёРЅР°РµС‚СЃСЏ СЃ РєРѕРЅС†Р° СЃС‚СЂРѕРє
     for (int i = len2 - 1; i >= 0; i--) 
     {
         int sub = ((num1[i + diff] - '0') - (num2[i] - '0') - carry);
@@ -229,7 +229,7 @@ void subtract_positive(const char* num1, const char* num2, char* result)
         }
     }
 
-    // Удаление нулей из результата
+    // РЈРґР°Р»РµРЅРёРµ РЅСѓР»РµР№ РёР· СЂРµР·СѓР»СЊС‚Р°С‚Р°
     int start = 0;
     while (start < len1 && result[start] == '0') 
     {
@@ -238,14 +238,14 @@ void subtract_positive(const char* num1, const char* num2, char* result)
 
     if (start == len1) 
     { 
-        // В случае, если результат равен 0
+        // Р’ СЃР»СѓС‡Р°Рµ, РµСЃР»Рё СЂРµР·СѓР»СЊС‚Р°С‚ СЂР°РІРµРЅ 0
         strcpy(result, "0");
     }
     else 
     {
         if (start > 0) 
         {
-            memmove(result, result + start, len1 - start + 1); // Сдвиг результата в начало
+            memmove(result, result + start, len1 - start + 1); // РЎРґРІРёРі СЂРµР·СѓР»СЊС‚Р°С‚Р° РІ РЅР°С‡Р°Р»Рѕ
         }
     }
 }
@@ -257,7 +257,7 @@ void subtract(const char* num1, const char* num2, char* result)
     bool isNum1Negative = isNegative(num1);
     bool isNum2Negative = isNegative(num2);
 
-    // Удаление минуса
+    // РЈРґР°Р»РµРЅРёРµ РјРёРЅСѓСЃР°
     if (isNum1Negative) 
     {
         strcpy(tempNum1, num1 + 1);
@@ -283,7 +283,7 @@ void subtract(const char* num1, const char* num2, char* result)
         if (needSwap < 0) 
         {
             subtract_positive(tempNum2, tempNum1, result);
-            memmove(result + 1, result, strlen(result) + 1); // Сдвиг результата
+            memmove(result + 1, result, strlen(result) + 1); // РЎРґРІРёРі СЂРµР·СѓР»СЊС‚Р°С‚Р°
             result[0] = '-';
         }
         else {
@@ -299,7 +299,7 @@ void subtract(const char* num1, const char* num2, char* result)
         else 
         {
             subtract_positive(tempNum1, tempNum2, result);
-            memmove(result + 1, result, strlen(result) + 1); // Сдвиг результата
+            memmove(result + 1, result, strlen(result) + 1); // РЎРґРІРёРі СЂРµР·СѓР»СЊС‚Р°С‚Р°
             result[0] = '-'; 
         }
     }
@@ -314,14 +314,14 @@ void subtract(const char* num1, const char* num2, char* result)
         addPositiveNumbers(tempNum1, tempNum2, result);
     }
 
-    // Проверка на -0
+    // РџСЂРѕРІРµСЂРєР° РЅР° -0
     if (strcmp(result, "-0") == 0) 
     {
         strcpy(result, "0");
     }
 }
 
-// Реверс строки
+// Р РµРІРµСЂСЃ СЃС‚СЂРѕРєРё
 void reverseString(char* str) 
 {
     int len = strlen(str);
@@ -333,10 +333,10 @@ void reverseString(char* str)
     }
 }
 
-// Умножение
+// РЈРјРЅРѕР¶РµРЅРёРµ
 void multiply(char* num1, char* num2, char* result) 
 {
-    // Убираем минус
+    // РЈР±РёСЂР°РµРј РјРёРЅСѓСЃ
     int is_negative_flag = 0;
     if (num1[0] == '-') 
     {
@@ -353,17 +353,17 @@ void multiply(char* num1, char* num2, char* result)
     int len2 = strlen(num2);
     int resultArr[MAX] = { 0 };
 
-    int i_n1 = 0; // Позиция для первого числа
-    int i_n2 = 0; // Позиция для второго числа
+    int i_n1 = 0; // РџРѕР·РёС†РёСЏ РґР»СЏ РїРµСЂРІРѕРіРѕ С‡РёСЃР»Р°
+    int i_n2 = 0; // РџРѕР·РёС†РёСЏ РґР»СЏ РІС‚РѕСЂРѕРіРѕ С‡РёСЃР»Р°
 
-    // Обход числа справа налево
+    // РћР±С…РѕРґ С‡РёСЃР»Р° СЃРїСЂР°РІР° РЅР°Р»РµРІРѕ
     for (int i = len1 - 1; i >= 0; i--) 
     {
         int carry = 0;
         int n1 = num1[i] - '0';
         i_n2 = 0;
 
-        // Перемножение n1 с каждой цифрой num2
+        // РџРµСЂРµРјРЅРѕР¶РµРЅРёРµ n1 СЃ РєР°Р¶РґРѕР№ С†РёС„СЂРѕР№ num2
         for (int j = len2 - 1; j >= 0; j--) 
         {
             int n2 = num2[j] - '0';
@@ -380,21 +380,21 @@ void multiply(char* num1, char* num2, char* result)
         i_n1++;
     }
 
-    // Пропуск нулей в начале
+    // РџСЂРѕРїСѓСЃРє РЅСѓР»РµР№ РІ РЅР°С‡Р°Р»Рµ
     int i = len1 + len2 - 1;
     while (i >= 0 && resultArr[i] == 0)
     {
         i--;
     }
 
-    // Если результат равен 0
+    // Р•СЃР»Рё СЂРµР·СѓР»СЊС‚Р°С‚ СЂР°РІРµРЅ 0
     if (i == -1) 
     {
         strcpy(result, "0");
         return;
     }
 
-    // Записываем результат
+    // Р—Р°РїРёСЃС‹РІР°РµРј СЂРµР·СѓР»СЊС‚Р°С‚
     int index = 0;
     if (is_negative_flag) 
     {
@@ -408,12 +408,12 @@ void multiply(char* num1, char* num2, char* result)
     result[index] = '\0';
 }
 
-// Деление
+// Р”РµР»РµРЅРёРµ
 void divide(const char* num1, const char* num2, char* result, int decimaplaces)
 {
     if (strcmp(num2, "0") == 0)
     {
-        strcpy(result, "Ошибка! Деление на ноль!");
+        strcpy(result, "РћС€РёР±РєР°! Р”РµР»РµРЅРёРµ РЅР° РЅРѕР»СЊ!");
         return;
     }
 
@@ -446,27 +446,27 @@ void divide(const char* num1, const char* num2, char* result, int decimaplaces)
 
     int resultPos = 0;
     int tempNum1Pos = 0;
-    bool decimalAdded = false; // Была ли добавлена десятичная точка
+    bool decimalAdded = false; // Р‘С‹Р»Р° Р»Рё РґРѕР±Р°РІР»РµРЅР° РґРµСЃСЏС‚РёС‡РЅР°СЏ С‚РѕС‡РєР°
 
     while (tempNum1Pos < strlen(tempNum1) || decimaplaces > 0)
     {
         if (tempNum1Pos >= strlen(tempNum1))
         {
-            // Если все цифры делимого были обработаны, добавляем ноль для продолжения деления после запятой
+            // Р•СЃР»Рё РІСЃРµ С†РёС„СЂС‹ РґРµР»РёРјРѕРіРѕ Р±С‹Р»Рё РѕР±СЂР°Р±РѕС‚Р°РЅС‹, РґРѕР±Р°РІР»СЏРµРј РЅРѕР»СЊ РґР»СЏ РїСЂРѕРґРѕР»Р¶РµРЅРёСЏ РґРµР»РµРЅРёСЏ РїРѕСЃР»Рµ Р·Р°РїСЏС‚РѕР№
             if (!decimalAdded)
             {
                 result[resultPos++] = '.';
                 decimalAdded = true;
             }
-            tempResult[strlen(tempResult)] = '0'; // Добавление нуля к остатку
+            tempResult[strlen(tempResult)] = '0'; // Р”РѕР±Р°РІР»РµРЅРёРµ РЅСѓР»СЏ Рє РѕСЃС‚Р°С‚РєСѓ
             decimaplaces--;
         }
         else
         {
-            // Добавляем следующую цифру к остатку
+            // Р”РѕР±Р°РІР»СЏРµРј СЃР»РµРґСѓСЋС‰СѓСЋ С†РёС„СЂСѓ Рє РѕСЃС‚Р°С‚РєСѓ
             size_t tempResultLen = strlen(tempResult);
             tempResult[tempResultLen] = tempNum1[tempNum1Pos++];
-            tempResult[tempResultLen + 1] = '\0'; // Конец строки
+            tempResult[tempResultLen + 1] = '\0'; // РљРѕРЅРµС† СЃС‚СЂРѕРєРё
 
             while (tempResult[0] == '0' && tempResult[1] != '\0')
             {

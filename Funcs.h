@@ -1,12 +1,12 @@
-#pragma once
+п»ї#pragma once
 
-int isNumber(char* str); // Ввод
-void addNumbers(char* num1, char* num2, char *result); // Сложение
+int isNumber(char* str); // Р’РІРѕРґ
+void addNumbers(char* num1, char* num2, char *result); // РЎР»РѕР¶РµРЅРёРµ
 void addPositiveNumbers(char* num1, char* num2, char* result);
-void reverseString(char* str); // Переворачивание
-void subtract(const char* num1, const char* num2, char* result); // Вычитание
-void subtract_positive(const char* num1, const char* num2, char* result); // Вычитание
-int compare_strings(const char* num1, const char* num2); // Сравнение
-bool isNegative(const char* num); // Минус
-void multiply(char* num1, char* num2, char* result); // Умножение
-void divide(const char* num1, const char* num2, char* result, int decimaplaces); // Деление
+void reverseString(char* str); // РџРµСЂРµРІРѕСЂР°С‡РёРІР°РЅРёРµ
+void subtract(const char* num1, const char* num2, char* result); // Р’С‹С‡РёС‚Р°РЅРёРµ
+void subtract_positive(const char* num1, const char* num2, char* result); // Р’С‹С‡РёС‚Р°РЅРёРµ
+int compare_strings(const char* num1, const char* num2); // РЎСЂР°РІРЅРµРЅРёРµ
+bool isNegative(const char* num); // РњРёРЅСѓСЃ
+void multiply(char* num1, char* num2, char* result); // РЈРјРЅРѕР¶РµРЅРёРµ
+void divide(const char* num1, const char* num2, char* result, int decimaplaces); // Р”РµР»РµРЅРёРµ
